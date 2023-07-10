@@ -1,0 +1,89 @@
+version: "3"
+
+env:
+    COMMON_INCLUDES: -f docker-compose.yml
+    BACKEND_INCLUDES: -f backend/docker-compose.yml -f backend/docker-compose.local.yml
+    FRONTEND_INCLUDES: -f frontend/docker-compose.yml -f frontend/docker-compose.local.yml
+
+tasks:
+    up:
+        desc: Start backend and frontend containers with local presets. Optionally you can use "task up -- {container}" to start only selected container.
+        cmds:
+            - docker-compose $COMMON_INCLUDES $BACKEND_INCLUDES $FRONTEND_INCLUDES up -d {{.CLI_ARGS}}
+    up:backend:
+        desc: Start backend containers with local presets
+        cmds:
+            - docker-compose $COMMON_INCLUDES $BACKEND_INCLUDES up -d
+    up:frontend:
+        desc: Start frontend containers with local presets
+        cmds:
+            - docker-compose $COMMON_INCLUDES $FRONTEND_INCLUDES up -d
+
+    stop:
+        desc: Stop backend and frontend containers with local presets. Optionally you can use "task stop -- {container}" to stop only selected container.
+        cmds:
+            - docker-compose $COMMON_INCLUDES $BACKEND_INCLUDES $FRONTEND_INCLUDES stop {{.CLI_ARGS}}
+    stop:backend:
+        desc: Stop backend containers with local presets
+        cmds:
+            - docker-compose $COMMON_INCLUDES $BACKEND_INCLUDES stop
+    stop:frontend:
+        desc: Stop frontend containers with local presets
+        cmds:
+            - docker-compose $COMMON_INCLUDES $FRONTEND_INCLUDES stop
+
+    build:
+        desc: Build backend and frontend containers with local presets. Optionally you can use "task build -- {container}" to build only selected container.
+        cmds:
+            - docker-compose $COMMON_INCLUDES $BACKEND_INCLUDES $FRONTEND_INCLUDES build {{.CLI_ARGS}}
+    build:backend:
+        desc: Build backend containers with local presets
+        cmds:
+            - docker-compose $COMMON_INCLUDES $BACKEND_INCLUDES build
+    build:frontend:
+        desc: Build frontend containers with local presets
+        cmds:
+            - docker-compose $COMMON_INCLUDES $FRONTEND_INCLUDES build
+
+    down:
+        desc: Stop and remove backend and frontend containers with local presets. Optionally you can use "task down -- {container}" to down only selected container.
+        cmds:
+            - docker-compose $COMMON_INCLUDES $BACKEND_INCLUDES $FRONTEND_INCLUDES down {{.CLI_ARGS}}
+    down:backend:
+        desc: Stop and remove backend containers with local presets
+        cmds:
+            - docker-compose $COMMON_INCLUDES $BACKEND_INCLUDES down
+    down:frontend:
+        desc: Stop and remove frontend containers with local presets
+        cmds:
+            - docker-compose $COMMON_INCLUDES $FRONTEND_INCLUDES down
+
+    prune:
+        desc: Stop and remove backend and frontend containers with local presets and all persistent volumes. Optionally you can use "task prune -- {container}" to prune only selected container with its volumes.
+        cmds:
+            - docker-compose $COMMON_INCLUDES $BACKEND_INCLUDES $FRONTEND_INCLUDES down --volume {{.CLI_ARGS}}
+    prune:backend:
+        desc: Stop and remove backend containers with local presets and all backend persistend volumes
+        cmds:
+            - docker-compose $COMMON_INCLUDES $BACKEND_INCLUDES down --volume
+    prune:frontend:
+        desc: Stop and remove frontend containers with local presets and all frontend persistend volumes
+        cmds:
+            - docker-compose $COMMON_INCLUDES $FRONTEND_INCLUDES down --volume
+
+    logs:
+        desc: Watch backend and frontend container logs
+        cmds:
+            - docker-compose $COMMON_INCLUDES $BACKEND_INCLUDES $FRONTEND_INCLUDES logs --tail 100 -f
+    ps:
+        desc: Show running backend and frontend containers
+        cmds:
+            - docker-compose $COMMON_INCLUDES $BACKEND_INCLUDES $FRONTEND_INCLUDES ps
+    exec:php:
+        desc: Exec php container bash
+        cmds:
+            - docker-compose $COMMON_INCLUDES $BACKEND_INCLUDES exec php bash
+
+    default:
+        cmds:
+            - task --list

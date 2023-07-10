@@ -1,0 +1,43 @@
+version: '3.8'
+
+volumes:
+    private-storage:
+
+services:
+    php:
+        image: ${PHP_BASE_IMAGE_TAG}
+        build:
+            context: ${PHP_DOCKERFILE_CONTEXT_DIR}
+            dockerfile: ${PHP_DOCKERFILE_CONTEXT_RELATIVE_PATH}/development/Dockerfile
+        ports:
+            - "${PHP_CONTAINER_PORT}:80"
+        volumes:
+            - "private-storage:/var/www/storage/"
+            - "public-storage:/var/www/storage/app/public/"
+    php-cron:
+        entrypoint: entrypoints/cron-entrypoint.sh
+        image: ${PHP_BASE_IMAGE_TAG}
+        build:
+            context: ${PHP_DOCKERFILE_CONTEXT_DIR}
+            dockerfile: ${PHP_DOCKERFILE_CONTEXT_RELATIVE_PATH}/development/Dockerfile
+        volumes:
+            - "private-storage:/var/www/storage/"
+            - "public-storage:/var/www/storage/app/public/"
+    php-worker:
+        entrypoint: entrypoints/worker-entrypoint.sh
+        image: ${PHP_BASE_IMAGE_TAG}
+        build:
+            context: ${PHP_DOCKERFILE_CONTEXT_DIR}
+            dockerfile: ${PHP_DOCKERFILE_CONTEXT_RELATIVE_PATH}/development/Dockerfile
+        volumes:
+            - "private-storage:/var/www/storage/"
+            - "public-storage:/var/www/storage/app/public/"
+    nginx:
+        image: ${NGINX_BASE_IMAGE_TAG}
+        build:
+            context: ${NGINX_DOCKERFILE_CONTEXT_DIR}
+            dockerfile: ${NGINX_DOCKERFILE_CONTEXT_RELATIVE_PATH}/development/Dockerfile
+        ports:
+            - "${NGINX_CONTAINER_PORT}:80"
+        volumes:
+            - "public-storage:/var/www/storage/app/public/"

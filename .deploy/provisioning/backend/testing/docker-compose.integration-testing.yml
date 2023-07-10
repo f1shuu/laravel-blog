@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+    php:
+        container_name: ${PHP_LOCAL_CONTAINER_NAME}_integration-testing
+        entrypoint: entrypoints/integration-testing-entrypoint.sh
+        depends_on:
+            mysql:
+                condition: service_healthy
+            mysql-test:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+    php-cron:
+        container_name: ${PHP_CRON_LOCAL_CONTAINER_NAME}_integration-testing
+    php-worker:
+        container_name: ${PHP_WORKER_LOCAL_CONTAINER_NAME}_integration-testing
+    nginx:
+        container_name: ${NGINX_LOCAL_CONTAINER_NAME}_integration-testing
+        depends_on:
+            - php
+    mysql:
+        container_name: ${MYSQL_LOCAL_CONTAINER_NAME}_integration-testing
+    mysql-test:
+        container_name: ${MYSQL_TEST_LOCAL_CONTAINER_NAME}_integration-testing
+        image: mysql:5.7.22
+        tty: true
+        env_file: ${MYSQL_TEST_ENV_FILE_PATH}
+        environment:
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        healthcheck:
+             test: "/usr/bin/mysql --user=root --password=$$MYSQL_ROOT_PASSWORD --execute \"SHOW DATABASES;\""

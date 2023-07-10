@@ -1,0 +1,65 @@
+version: '3.8'
+
+volumes:
+    private-storage:
+
+services:
+    php:
+        container_name: ${PHP_LOCAL_CONTAINER_NAME}
+        env_file: ./backend/.php.env
+        build:
+            context: ${PHP_DOCKERFILE_CONTEXT_DIR}
+            dockerfile: ${PHP_DOCKERFILE_CONTEXT_RELATIVE_PATH}/local/Dockerfile
+        volumes:
+            - ${PHP_DOCKERFILE_CONTEXT_DIR}:/var/www
+    php-cron:
+        container_name: ${PHP_CRON_LOCAL_CONTAINER_NAME}
+        entrypoint: ["echo", "Service php-cron disabled for local"]
+        # entrypoint: .docker/php/local/entrypoints/cron-entrypoint.sh
+        env_file: ./backend/.php.env
+        build:
+            context: ${PHP_DOCKERFILE_CONTEXT_DIR}
+            dockerfile: ${PHP_DOCKERFILE_CONTEXT_RELATIVE_PATH}/local/Dockerfile
+        volumes:
+            - ${PHP_DOCKERFILE_CONTEXT_DIR}:/var/www
+    php-worker:
+        container_name: ${PHP_WORKER_LOCAL_CONTAINER_NAME}
+        entrypoint: .docker/php/local/entrypoints/worker-entrypoint.sh
+        env_file: ./backend/.php.env
+        build:
+            context: ${PHP_DOCKERFILE_CONTEXT_DIR}
+            dockerfile: ${PHP_DOCKERFILE_CONTEXT_RELATIVE_PATH}/local/Dockerfile
+        volumes:
+            - ${PHP_DOCKERFILE_CONTEXT_DIR}:/var/www
+    nginx:
+        image: ${NGINX_BASE_IMAGE_TAG}
+        container_name: ${NGINX_LOCAL_CONTAINER_NAME}
+        build:
+            context: ${NGINX_DOCKERFILE_CONTEXT_DIR}
+            dockerfile: ${NGINX_DOCKERFILE_CONTEXT_RELATIVE_PATH}/local/Dockerfile
+        ports:
+            - "${NGINX_CONTAINER_PORT}:80"
+        volumes:
+            - ${PHP_DOCKERFILE_CONTEXT_DIR}/public/:/var/www/public/
+            - ${PHP_DOCKERFILE_CONTEXT_DIR}/storage/app/public/:/var/www/public/storage/
+    mysql:
+        container_name: ${MYSQL_LOCAL_CONTAINER_NAME}
+        ports:
+            - "${MYSQL_CONTAINER_PORT}:3306"
+    mysql-test:
+        container_name: boilerplate_test-mysql
+        image: mysql:5.7
+        tty: true
+        environment:
+            - MYSQL_USER=boilerplate-user
+            - MYSQL_PASSWORD=password
+            - MYSQL_ROOT_PASSWORD=password
+            - MYSQL_DATABASE=boilerplate-test-db
+        tmpfs:
+            - /var/lib/mysql:rw
+    phpmyadmin:
+        container_name: ${PHPMYADMIN_LOCAL_CONTAINER_NAME}
+    redis:
+        container_name: ${REDIS_LOCAL_CONTAINER_NAME}
+        ports:
+            - "${REDIS_CONTAINER_PORT}:6379"

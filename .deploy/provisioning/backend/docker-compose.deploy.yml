@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+    php-post-deployment:
+        image: ${PHP_BASE_IMAGE_TAG}
+        entrypoint: entrypoints/post-deployment-entrypoint.sh
+        env_file: ${PHP_ENV_FILE_PATH}
+        volumes:
+            - public-storage:/var/www/storage/app/public
+        deploy:
+            restart_policy:
+                condition: on-failure
+                max_attempts: 3
+    php:
+        deploy:
+            mode: replicated
+            replicas: 1
+            update_config:
+                order: start-first
+                failure_action: rollback
+                delay: 5s
+            restart_policy:
+                condition: on-failure
+                max_attempts: 10
+    nginx:
+        deploy:
+            mode: replicated
+            replicas: 1
+            update_config:
+                order: start-first
+                failure_action: rollback
+                delay: 5s
+            restart_policy:
+                condition: on-failure
+                max_attempts: 10
