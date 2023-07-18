@@ -15,8 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::truncate();
-        Category::truncate();
+//        User::truncate();
+//        Category::truncate();
+//        Post::truncate();
 
         Post::factory(10) -> create();
     }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
@@ -11,9 +10,8 @@ class PostController extends Controller
     {
         return view('posts.index', [
             'posts' => Post::latest()->filter(
-                request(['search', 'category', 'author'])
-            )->paginate(18)->withQueryString()
-        ]);
+                request(['search', 'category', 'tags', 'author'])
+            )->paginate(18)->withQueryString()]);
     }
 
     public function show(Post $post)

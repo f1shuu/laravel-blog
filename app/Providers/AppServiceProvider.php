@@ -18,17 +18,6 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
-    {
-        app()->bind(Newsletter::class, function () {
-            $client = (new ApiClient)->setConfig([
-                'apiKey' => config('services.mailchimp.key'),
-                'server' => 'us6'
-            ]);
-
-            return new MailchimpNewsletter($client);
-        });
-    }
 
     /**
      * Bootstrap any application services.
@@ -40,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
 
         Gate::define('admin', function (User $user) {
-            return $user->username === 'JeffreyWay';
+            return $user->username === 'Admin';
         });
 
         Blade::if('admin', function () {
