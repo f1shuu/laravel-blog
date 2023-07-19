@@ -34,7 +34,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button
-                                                onclick="return confirm('Are you sure you want to delete {{ $post->title }} post?')"
+                                                onclick="return confirm('Are you sure you want to delete ``{{ $post->title }}`` post?')"
                                                 type="submit"
                                                 class="font-bold text-red-500 hover:text-red-600 border border-red-500 px-5 py-2 rounded-xl">
                                                 Delete

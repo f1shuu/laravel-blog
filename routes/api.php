@@ -11,3 +11,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/posts/{id}', [PostResourceController::class, 'show']);
 Route::get('/posts', [PostResourceController::class, 'index']);
 
+Route::post('/posts/create', [PostResourceController::class, 'store']);
