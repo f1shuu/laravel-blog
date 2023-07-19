@@ -9,6 +9,7 @@
                 <x-form.input name="email" type="email" autocomplete="username"/>
                 <x-form.input name="avatar" type="file"/>
                 <x-form.input name="password" type="password" autocomplete="password"/>
+                <x-form.input name="password_confirmation" type="password" autocomplete="password"/>
 
                 <x-form.button>Join!</x-form.button>
             </form>

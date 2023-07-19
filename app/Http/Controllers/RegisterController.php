@@ -18,7 +18,7 @@ class RegisterController extends Controller
             'username' => 'required|min:3|max:50|unique:users,username',
             'email' => 'required|email|max:50|unique:users,email',
             'avatar' => 'required|image',
-            'password' => 'required|min:6|max:50'
+            'password' => 'required|confirmed|min:6'
         ]);
 
         $attributes['avatar'] = request()->file('avatar')->store('avatars');
