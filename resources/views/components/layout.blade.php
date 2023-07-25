@@ -33,14 +33,26 @@
                         </button>
                     </x-slot>
 
+                    <x-dropdown-item href="profile" :active="request()->is('profile')">Your profile</x-dropdown-item>
                     <x-dropdown-item href="admin/posts/create" :active="request()->is('admin/posts/create')">New post</x-dropdown-item>
-                    <x-dropdown-item href="tags/create" :active="request()->is('admin/tags/create')">New tag</x-dropdown-item>
-                    <x-dropdown-item href="tags" :active="request()->is('admin/tags')">View all tags</x-dropdown-item>
+                    <x-dropdown-item href="tags/create" :active="request()->is('tags/create')">New tag</x-dropdown-item>
+                    <x-dropdown-item href="tags" :active="request()->is('tags')">View all tags</x-dropdown-item>
                     <x-dropdown-item href="admin/posts" :active="request()->is('admin/posts')">View all posts</x-dropdown-item>
 
                 </x-dropdown>
             @else
-                <a class="mr-5 text-white text-xs font-bold uppercase">Welcome, {{ auth()->user()->username }}!</a>
+                <x-dropdown>
+                    <x-slot name="trigger">
+                        <button
+                            class="mr-5 text-white text-xs font-bold uppercase border border-gray-500 rounded-full px-3 py-3 hover:bg-gray-600">
+                            Welcome, {{ auth()->user()->username }}!
+                        </button>
+                    </x-slot>
+
+                    <x-dropdown-item href="profile" :active="request()->is('profile')">Your profile</x-dropdown-item>
+                    <x-dropdown-item href="tags/create" :active="request()->is('tags/create')">New tag</x-dropdown-item>
+                    <x-dropdown-item href="tags" :active="request()->is('tags')">View all tags</x-dropdown-item>
+                </x-dropdown>
                 @endadmin
 
                 <form method="POST" action="/logout" class="font-semibold uppercase">

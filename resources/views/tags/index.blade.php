@@ -25,7 +25,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button
-                                                onclick="return confirm('Are you sure you want to delete #{{ Str::lower($tag->name) }} tag?')"
+                                                onclick="return confirm('Are you sure you want to delete the #{{ Str::lower($tag->name) }} tag?')"
                                                 type="submit"
                                                 class="font-bold text-red-500 hover:text-red-600 border border-red-500 px-5 py-2 rounded-xl">
                                                 Delete

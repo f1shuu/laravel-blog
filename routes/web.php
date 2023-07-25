@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
@@ -28,3 +29,6 @@ Route::post('tags', [TagController::class, 'index'])->middleware('auth');
 Route::get('tags/create', [TagController::class, 'create'])->middleware('auth');
 Route::post('tags', [TagController::class, 'store'])->middleware('auth');
 Route::delete('tags/{tag:slug}', [TagController::class, 'destroy'])->middleware('auth');
+
+Route::get('profile', [ProfileController::class, 'index'])->middleware('auth');
+Route::post('profile', [ProfileController::class, 'index'])->middleware('auth');

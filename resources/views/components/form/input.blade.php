@@ -1,13 +1,13 @@
-@props(['name', 'textColor' => 'black'])
+@props(['input', 'name', 'textColor' => 'black'])
 
 <x-form.field>
     <x-form.label name="{{ str_replace('_', ' ', $name) }}"/>
 
     <input class="text-{{ $textColor }} border border-gray-400 p-2 w-full rounded-xl"
-           name="{{ $name }}"
-           id="{{ $name }}"
-           {{ $attributes(['value' => old($name)]) }}
+           name="{{ $input }}"
+           id="{{ $input }}"
+           {{ $attributes(['value' => old($input)]) }}
     >
 
-    <x-form.error name="{{ $name }}"/>
+    <x-form.error name="{{ $input }}"/>
 </x-form.field>
