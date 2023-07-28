@@ -1,15 +1,15 @@
 <x-layout>
     <x-setting :heading="'Edit Post: ' . $post->title">
-        <form method="POST" action="/admin/posts/{{ $post->id }}" enctype="multipart/form-data">
+        <form method="POST" action="/admin/posts/{{ $post->id }}" enctype="multipart/form-data" class="m-5">
             @csrf
             @method('PATCH')
 
-            <x-form.input name="title" :value="old('title', $post->title)"/>
-            <x-form.input name="slug" :value="old('slug', $post->slug)"/>
+            <x-form.input name="title" input="title" :value="old('title', $post->title)"/>
+            <x-form.input name="slug" input="slug" :value="old('slug', $post->slug)"/>
 
             <div class="mt-6">
                 <div class="flex-1">
-                    <x-form.input name="thumbnail" type="file" :value="old('thumbnail', $post->thumbnail)"/>
+                    <x-form.input name="thumbnail" input="thumbnail" type="file" textColor="white" :value="old('thumbnail', $post->thumbnail)"/>
                 </div>
 
                 <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="" class="rounded-xl mb-6" width="100">
